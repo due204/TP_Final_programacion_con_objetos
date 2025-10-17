@@ -27,7 +27,7 @@ public class Docente : Persona
     // Metodos de la clase docente
     public void CursosDados()
     {
-        // codigo para mostrar los cursos dados
+        // codigo para mostrar los cursos dados por el docente
     }
 
     // Constructor parametrizado

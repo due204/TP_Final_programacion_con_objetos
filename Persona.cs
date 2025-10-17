@@ -28,6 +28,8 @@ public class Persona
         set { edad = value; }
     }
 
+    // La clase persona no tiene metodos especificos
+
     // Constructor parametrizado
     public Persona(string nombre, string apellido, int edad)
     {

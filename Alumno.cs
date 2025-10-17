@@ -36,7 +36,7 @@ public class Alumno : Persona
 
     public void Promedio()
     {
-        // codigo para el promedio
+        // codigo para el promedio del alumno
     }
 
 
