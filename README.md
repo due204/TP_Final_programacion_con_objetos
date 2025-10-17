@@ -1,13 +1,5 @@
 # TP_Final_programacion_con_objetos
 Trabajo final de la materia Programacion con objetos. Lenguaje usado C#
-/*
- * Creado por SharpDevelop.
- * Usuario: nuevo2
- * Fecha: 16/10/2025
- * Hora: 09:27
- * 
- * Para cambiar esta plantilla use Herramientas | Opciones | Codificación | Editar Encabezados Estándar
- */
 using System;
 using System.Collections.Generic;
 
@@ -17,7 +9,7 @@ namespace TP_final_obejetos_de_programación
     {
         public static void Main(string[] args)
         {
-            //Instituto miInstituto = new Instituto();esta comentada para que compile el menu, a medida que se implementen los metodos se debe habilitar
+            //Instituto miInstituto = new Instituto();
             int opcion = 0;//variable de opcion fuera del bucle
 
             do
@@ -199,4 +191,6 @@ namespace TP_final_obejetos_de_programación
         }
     }
 }
+
+
 
