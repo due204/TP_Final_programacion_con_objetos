@@ -7,4 +7,5 @@ public class CupoLlenoException : Exception
     public CupoLlenoException() : base("El cupo del curso está lleno.")
     {
     }
+
 }

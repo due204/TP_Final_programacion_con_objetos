@@ -29,16 +29,10 @@ public class Alumno : Persona
     }
 
     // Metodos de la clase alumno
-    public void Inscribirse()
-    {
-        // codigo para inscribirse en un curso
-    }
-
     public void Promedio()
     {
         // codigo para el promedio del alumno
     }
-
 
 
     // Constructor parametrizado
