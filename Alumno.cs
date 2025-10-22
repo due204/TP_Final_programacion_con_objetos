@@ -11,6 +11,7 @@ public class Alumno : Persona
     private List<Curso> cursos;
     private Dictionary<string, double> notas;
     private int legajo;
+    private int dni;
 
     // Getters y Setters de los atributos
     public List<Curso> Cursos
@@ -26,31 +27,28 @@ public class Alumno : Persona
     public int Legajo
     {
         get { return legajo; }
-        set { 
+        set
+        {
             if (value <= 0)
             {
-                throw new LegajoNegativoException("El legajo debe ser un numero positivo.");
+                throw new NumeroNegativoException("El legajo debe ser un numero positivo.");
             }
             legajo = value;
-         }
+        }
     }
-
-    // Metodos de la clase alumno
-    // Calcular el promedio de las notas del alumno
-    public double Promedio()
+    
+    public int Dni
     {
-        // Si no tiene notas o notas es null el promedio es 0
-        if (notas == null || notas.Count == 0)
+        get { return dni; }
+        set
         {
-            return 0;
-        }
-        else
-        {
-            // Average es un metodo que calcula el promedio
-            return notas.Values.Average();
+            if (value <= 0)
+            {
+                throw new NumeroNegativoException("El dni debe ser un numero positivo.");
+            }
+            dni = value;
         }
     }
-
 
     // Constructor parametrizado
     public Alumno(string nombre, string apellido, int edad, int legajo) : base(nombre, apellido, edad)
