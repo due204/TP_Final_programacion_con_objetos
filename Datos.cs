@@ -42,19 +42,22 @@ namespace TP_Programacion_Objetos
         {
             try
             {
+                // Si el archivo no existe devuelvo un instituto nuevo
                 if (!File.Exists(rutaArchivo))
                 {
                     return new Instituto("Aprender+");
                 }
 
                 string json = File.ReadAllText(rutaArchivo);
+                // En caso de que falle la deserializacion devuelvo un instituto nuevo
                 Instituto instituto = JsonSerializer.Deserialize<Instituto>(json, opciones) ?? new Instituto("Aprender+");
-
+                // Devuelvo el instituto cargado y en caso de ser nullo un instituto nuevo
                 return instituto ?? new Instituto("Aprender+");
             }
 
             catch (Exception)
             {
+                // En caso de que algo falle devuelvo un instituto nuevo
                 return new Instituto("Aprender+");
             }
         }
