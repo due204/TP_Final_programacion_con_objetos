@@ -1,3 +1,10 @@
+/*
+Este archivo es de solo puebas y puede contener varios errores
+OJO
+*/
+
+
+
 using System;
 
 namespace TP_Programacion_Objetos;
@@ -18,59 +25,87 @@ public class Instituto
         get { return nombreDeLaInstitucion; }
     }
 
+    public List<Curso> ListaCursos
+    {
+        get { return listaCursos; }
+    }
+
     // Metodos
     public bool InscribirAlumnoEnCurso()
     {
-        Console.WriteLine("Ingrese el legajo del alumno a inscribir:");
-        // ?? Es el operador de fusion nula
-        // Si el valor de la izquierda es null asigna el valor de la derecha
-        int legajo = int.Parse(Console.ReadLine() ?? "0");
-
-        if (legajo <= 0)
+        Console.Write("Ingrese el legajo del alumno a inscribir: ");
+        int legajo;
+        if (!int.TryParse(Console.ReadLine(), out legajo) || legajo <= 0)
         {
-            throw new LegajoNegativoException("El legajo debe ser un numero mayor a 0.");
+            Console.WriteLine("El legajo debe ser un nUmero mayor a 0.");
+            return false;
         }
 
-        // Busco el alumno en la lista de alumnos
+        // Buscamos el alumno
+        Alumno alumnoEncontrado = null;
         foreach (Alumno alumno in listaAlumnos)
         {
             if (alumno.Legajo == legajo)
             {
-                Console.WriteLine("Ingrese el nombre del curso al que desea inscribirse:");
-                string nombreCurso = Console.ReadLine() ?? "";
+                alumnoEncontrado = alumno;
+                break;
+            }
+        }
 
-                // Busco el curso en la lista de cursos
-                foreach (Curso curso in listaCursos)
+        if (alumnoEncontrado == null)
+        {
+            Console.WriteLine("No se encontrO un alumno con ese legajo.");
+            Console.Write("¿Desea registrar un nuevo alumno? (s/n): ");
+            string respuesta = Console.ReadLine() ?? "n";
+            if (respuesta.ToLower() == "s")
+            {
+                Console.Write("Ingrese el nombre del alumno: ");
+                string nombre = Console.ReadLine() ?? "";
+                Console.Write("Ingrese el apellido del alumno: ");
+                string apellido = Console.ReadLine() ?? "";
+                Console.Write("Ingrese la edad del alumno: ");
+                int edad;
+                if (!int.TryParse(Console.ReadLine(), out edad) || edad <= 0 || nombre == "" || apellido == "")
                 {
-                    if (curso.Nombre == nombreCurso)
-                    {
-                        try
-                        {
-                            curso.AgregarAlumno(alumno);
-                            Console.WriteLine("Alumno inscripto correctamente en el curso");
-                            return true;
-                        }
-                        catch (CupoLlenoException ex)
-                        {
-                            Console.WriteLine("No se pudo inscribir al alumno: " + ex.Message);
-                            return false;
-                        }
-                    }
+                    Console.WriteLine("Datos invalidos. No se pudo registrar el alumno.");
+                    return false;
                 }
-                Console.WriteLine("Curso no encontrado.");
                 return false;
             }
         }
 
+        // Mostrar cursos disponibles
+        Console.WriteLine("\nCursos disponibles:");
+        for (int i = 0; i < listaCursos.Count; i++)
+        {
+            Console.WriteLine($"{(i + 1):D2} {listaCursos[i].Nombre}");
+        }
 
+        Console.Write("\nIngrese el nUmero del curso al que desea inscribirse: ");
+        int numeroCurso;
+        if (!int.TryParse(Console.ReadLine(), out numeroCurso) ||
+            numeroCurso < 1 || numeroCurso > listaCursos.Count)
+        {
+            Console.WriteLine("Número de curso inválido.");
+            return false;
+        }
 
+        // Seleccionar curso
+        Curso cursoSeleccionado = listaCursos[numeroCurso - 1];
 
-        return false;
-
-
-
-
+        try
+        {
+            cursoSeleccionado.AgregarAlumnoCurso(alumnoEncontrado);
+            Console.WriteLine("Alumno inscripto correctamente en el curso '" + cursoSeleccionado.Nombre + "'.");
+            return true;
+        }
+        catch (CupoLlenoException ex)
+        {
+            Console.WriteLine("No se pudo inscribir al alumno: " + ex.Message);
+            return false;
+        }
     }
+
 
     public bool EliminarAlumnoDeCurso()
     {
@@ -80,7 +115,7 @@ public class Instituto
 
         if (legajo <= 0)
         {
-            throw new LegajoNegativoException("El legajo debe ser un numero mayor a 0.");
+            throw new NumeroNegativoException("El legajo debe ser un numero mayor a 0.");
         }
 
         // Falta toda la logica para eliminar el alumno del curso
@@ -97,6 +132,11 @@ public class Instituto
         listaDocente = new List<Docente>();//inicializa lista
         listaAlumnos = new List<Alumno>();//inicializa lista
         listaCursos = new List<Curso>();//inicializa lista
+
+        // Creo los alumnos
+        Alumno alumno1 = new Alumno("Juan", "Perez", 20, 1001);
+        Alumno alumno2 = new Alumno("Maria", "Gomez", 22, 1002);
+        Alumno alumno3 = new Alumno("Luis", "Lopez", 19, 1003);
 
         // Creo los docentes
         Docente docente1 = new Docente("Flavia", "Choren", 36, 1000);
@@ -122,17 +162,10 @@ public class Instituto
         Curso Calculo = new Curso("Calculo I", docente9, 10);
         Curso SistemasOperativos = new Curso("Sistemas operativos I", docente10, 9);
 
-        // Agrego los cursos a la lista
-        listaCursos.Add(ProgramacionconObejetos);
-        listaCursos.Add(Algebra);
-        listaCursos.Add(MatematicaDiscreta);
-        listaCursos.Add(BaseDatos);
-        listaCursos.Add(Historia);
-        listaCursos.Add(TallerIngenieria);
-        listaCursos.Add(Ingles);
-        listaCursos.Add(Electronica);
-        listaCursos.Add(Calculo);
-        listaCursos.Add(SistemasOperativos);
+        // Agrego los alumnos a la lista
+        listaAlumnos.Add(alumno1);
+        listaAlumnos.Add(alumno2);
+        listaAlumnos.Add(alumno3);
 
         // Agrego los docentes a la lista
         listaDocente.Add(docente1);
@@ -146,6 +179,17 @@ public class Instituto
         listaDocente.Add(docente9);
         listaDocente.Add(docente10);
 
+        // Agrego los cursos a la lista
+        listaCursos.Add(ProgramacionconObejetos);
+        listaCursos.Add(Algebra);
+        listaCursos.Add(MatematicaDiscreta);
+        listaCursos.Add(BaseDatos);
+        listaCursos.Add(Historia);
+        listaCursos.Add(TallerIngenieria);
+        listaCursos.Add(Ingles);
+        listaCursos.Add(Electronica);
+        listaCursos.Add(Calculo);
+        listaCursos.Add(SistemasOperativos);
     }
 
 }
