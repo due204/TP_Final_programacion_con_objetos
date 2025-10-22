@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 
 
 namespace TP_Programacion_Objetos;
@@ -25,20 +26,36 @@ public class Alumno : Persona
     public int Legajo
     {
         get { return legajo; }
-        set { legajo = value; }
+        set { 
+            if (value <= 0)
+            {
+                throw new LegajoNegativoException("El legajo debe ser un numero positivo.");
+            }
+            legajo = value;
+         }
     }
 
     // Metodos de la clase alumno
-    public void Promedio()
+    // Calcular el promedio de las notas del alumno
+    public double Promedio()
     {
-        // codigo para el promedio del alumno
+        // Si no tiene notas o notas es null el promedio es 0
+        if (notas == null || notas.Count == 0)
+        {
+            return 0;
+        }
+        else
+        {
+            // Average es un metodo que calcula el promedio
+            return notas.Values.Average();
+        }
     }
 
 
     // Constructor parametrizado
     public Alumno(string nombre, string apellido, int edad, int legajo) : base(nombre, apellido, edad)
     {
-        this.legajo = legajo;
+        this.Legajo = legajo;
         this.cursos = new List<Curso>();
         this.notas = new Dictionary<string, double>();
     }

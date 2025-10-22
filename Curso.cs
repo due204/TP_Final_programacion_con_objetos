@@ -39,33 +39,104 @@ public class Curso
     // Metodos de la clase curso
     public bool AgregarAlumno(Alumno alumno)
     {
+        // Verifico que alumno no sea nulo
+        if (alumno == null)
+        {
+            return false;
+        }
+
+        // Verifico si ya está inscrito por legajo
+        for (int i = 0; i < alumnos.Count; i++)
+        {
+            if (alumnos[i].Legajo == alumno.Legajo)
+            {
+                return false;
+            }
+        }
+
+        // Verificar cupo
+        if (alumnos.Count >= maxAlumnos)
+        {
+            // Si el cupo está lleno lanzo la excepcion
+            throw new CupoLlenoException("El cupo del curso está lleno.");
+        }
+        // Si pasa todas las verificaciones lo agrego
         alumnos.Add(alumno);
         return true;
-
     }
 
     // Eliminr un alumno del curso por el legajo
-    public void EliminarAlumno(Alumno alumno)
+    public bool EliminarAlumno(Alumno alumno)
     {
-        foreach (Alumno a in alumnos)
+        // Verifico que alumno no sea nulo
+        if (alumno == null)
         {
-            if (a.Legajo == alumno.Legajo)
+            return false;
+        }
+
+        for (int i = alumnos.Count - 1; i >= 0; i--)
+        {
+            if (alumnos[i].Legajo == alumno.Legajo)
             {
-                alumnos.Remove(a);
+                alumnos.RemoveAt(i);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public bool RegistrarNota(Alumno alumno, double nota)
+    {
+        // Verifico que alumno no sea nulo
+        if (alumno == null)
+        {
+            return false;
+        }
+
+        // Verifico que el alumno este inscripto en este curso por por legajo
+        bool encontrado = false;
+        for (int i = 0; i < alumnos.Count; i++)
+        {
+            if (alumnos[i].Legajo == alumno.Legajo)
+            {
+                encontrado = true;
                 break;
             }
         }
 
+        if (!encontrado)
+        {
+            return false;
+        }
+
+        // Me aseguro que la colección de notas exista
+        if (alumno.Notas == null)
+        {
+            alumno.Notas = new Dictionary<string, double>();
+        }
+
+        // Valido rango de notas
+        alumno.Notas[nombre] = nota;
+        return true;
     }
 
-    public void RegistrarNota(Alumno alumno, double nota)
+    public double CalcularPromedio()
     {
+        double suma = 0.0;
+        int cuenta = 0;
 
-    }
-    
-    public void CalcularPromedio()
-    {
-
+        for (int i = 0; i < alumnos.Count; i++)
+        {
+            Alumno a = alumnos[i];
+            // ContainsKey comprueba si un Dictionary contiene una clave dada y devuelve true o false
+            if (a.Notas != null && a.Notas.ContainsKey(nombre))
+            {
+                suma += a.Notas[nombre];
+                cuenta++;
+            }
+        }
+        double promedio = suma / cuenta;
+        return promedio;
     }
 
     // Constructor
