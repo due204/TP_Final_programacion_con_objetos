@@ -6,29 +6,29 @@ namespace TP_Programacion_Objetos;
 public class Curso
 {
     // Atributos
-    private string nombre;
-    private Docente docente;
-    private int maxAlumnos;
+    private string nombreCurso;
+    private Docente docenteACargo;
+    private int cupoMaximoAlumnos;
     private List<Alumno> alumnos;
 
     // Getters y Setters de los atributos
 
     public string Nombre
     {
-        get { return nombre; }
-        set { nombre = value; }
+        get { return nombreCurso; }
+        set { nombreCurso = value; }
     }
 
     public Docente Docente
     {
-        get { return docente; }
-        set { docente = value; }
+        get { return docenteACargo; }
+        set { docenteACargo = value; }
     }
 
-    public int MaxAlumnos
+    public int CupoMaximoAlumnos
     {
-        get { return maxAlumnos; }
-        set { maxAlumnos = value; }
+        get { return cupoMaximoAlumnos; }
+        set { cupoMaximoAlumnos = value; }
     }
 
     public List<Alumno> Alumnos
@@ -37,7 +37,7 @@ public class Curso
     }
 
     // Metodos de la clase curso
-    public bool AgregarAlumno(Alumno alumno)
+    public bool AgregarAlumnoCurso(Alumno alumno)
     {
         // Verifico que alumno no sea nulo
         if (alumno == null)
@@ -55,7 +55,7 @@ public class Curso
         }
 
         // Verificar cupo
-        if (alumnos.Count >= maxAlumnos)
+        if (alumnos.Count >= cupoMaximoAlumnos)
         {
             // Si el cupo está lleno lanzo la excepcion
             throw new CupoLlenoException("El cupo del curso está lleno.");
@@ -66,7 +66,7 @@ public class Curso
     }
 
     // Eliminr un alumno del curso por el legajo
-    public bool EliminarAlumno(Alumno alumno)
+    public bool EliminarAlumnoCurso(Alumno alumno)
     {
         // Verifico que alumno no sea nulo
         if (alumno == null)
@@ -85,7 +85,7 @@ public class Curso
         return false;
     }
 
-    public bool RegistrarNota(Alumno alumno, double nota)
+    public bool RegistrarNotaCurso(Alumno alumno, double nota)
     {
         // Verifico que alumno no sea nulo
         if (alumno == null)
@@ -116,12 +116,19 @@ public class Curso
         }
 
         // Valido rango de notas
-        alumno.Notas[nombre] = nota;
+        alumno.Notas[nombreCurso] = nota;
         return true;
     }
 
-    public double CalcularPromedio()
+    public double CalcularPromedioCurso(Alumno alumno)
     {
+        // Verifico que alumno no sea nulo
+        if (alumno == null)
+        {
+            // Si el alumno es nulo retorno -1.0 para avisar que es nulo
+            return -1.0;
+        }
+
         double suma = 0.0;
         int cuenta = 0;
 
@@ -129,9 +136,9 @@ public class Curso
         {
             Alumno a = alumnos[i];
             // ContainsKey comprueba si un Dictionary contiene una clave dada y devuelve true o false
-            if (a.Notas != null && a.Notas.ContainsKey(nombre))
+            if (a.Notas != null && a.Notas.ContainsKey(nombreCurso))
             {
-                suma += a.Notas[nombre];
+                suma += a.Notas[nombreCurso];
                 cuenta++;
             }
         }
@@ -139,12 +146,28 @@ public class Curso
         return promedio;
     }
 
+    public List<Curso> CursosDadosPorUnDocente(List<Curso> listaCursos, Docente docente)
+    {
+        List<Curso> cursosDelDocente = new List<Curso>();
+
+        for (int i = 0; i < listaCursos.Count; i++)
+        {
+            if (listaCursos[i].Docente == docente)
+            {
+                cursosDelDocente.Add(listaCursos[i]);
+            }
+        }
+
+        return cursosDelDocente;
+    }
+
+
     // Constructor
     public Curso(string nombre, Docente docente, int maxAlumnos)
     {
-        this.nombre = nombre;
-        this.docente = docente;
-        this.maxAlumnos = maxAlumnos;
+        this.nombreCurso = nombre;
+        this.docenteACargo = docente;
+        this.cupoMaximoAlumnos = maxAlumnos;
         this.alumnos = new List<Alumno>();
     }  
 
