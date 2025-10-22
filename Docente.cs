@@ -24,12 +24,6 @@ public class Docente : Persona
         set { sueldo = value; }
     }
 
-    // Metodos de la clase docente
-    public void CursosDados()
-    {
-        // codigo para mostrar los cursos dados por el docente
-    }
-
     // Constructor parametrizado
     public Docente(string nombre, string apellido, int edad, double sueldo) : base(nombre, apellido, edad)
     {
